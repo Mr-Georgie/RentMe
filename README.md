@@ -2,10 +2,10 @@
 
 A service thst allows individuals and organizations to lease equipments for long or short term use.
 
-Demo account hosting on heroku
+## Links
 
-- [API link hosted on heroku](https://something.herokuapp.com/)
-- [User Interface link hosted on Netlify](https://something.netlify.app/)
+- [API hosted on heroku](https://something.herokuapp.com/)
+- [User Interface hosted on Netlify](https://something.netlify.app/)
 
 ## Programming language used
 - Frontend - Javascript & ReactJs
