@@ -11,9 +11,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
 import environ
 env = environ.Env()
@@ -30,12 +30,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = env('SECRET_KEY') for development server
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY') 
+# SECRET_KEY = os.getenv('SECRET_KEY') for development server
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = env('DEBUG') for development server
-DEBUG = os.getenv('DEBUG')
+DEBUG = env('DEBUG')
+# DEBUG = os.getenv('DEBUG') for development server
 
 ALLOWED_HOSTS = []
 
@@ -186,8 +186,8 @@ EMAIL_PORT = 465 # OR 587
 
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
-EMAIL_HOST = os.getenv('EMAIL_HOST')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+EMAIL_HOST = env('EMAIL_HOST')
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 django_heroku.settings(locals())
