@@ -2,9 +2,9 @@
 
 A service thst allows individuals and organizations to lease equipments for long or short term use.
 
-## Links
+## Links & Documentation
 
-- [API hosted on heroku](https://something.herokuapp.com/)
+- [Swagger API Documentation](https://rent-me-api.herokuapp.com/)
 - [User Interface hosted on Netlify](https://something.netlify.app/)
 
 ## Programming language used
@@ -12,11 +12,7 @@ A service thst allows individuals and organizations to lease equipments for long
 
 - Python & [django rest framework](https://www.django-rest-framework.org/)
 
-## API documentation
 
-This was documented using swagger
-
-here is a [link](https://)
 
 ## Issues
 
