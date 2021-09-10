@@ -4,6 +4,7 @@ db.sqlite3
 venv/
 / .env
 .env
+static
 
 # Django
 *.log
