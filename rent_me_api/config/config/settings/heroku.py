@@ -3,7 +3,7 @@ Production settings for heroku
 """
 import environ
 
-from config.settings.base import *
+from .base import *
 
 env = environ.Env()
 
