@@ -10,7 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
-
+import datetime
 # from dotenv import load_dotenv
 
 # load_dotenv()
@@ -56,8 +56,10 @@ INSTALLED_APPS = [
     'corsheaders',
     'authentication',
     'drf_yasg',
+    'social_auth',
     # 'all_products',
     # 'user_products',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 SWAGGER_SETTINGS = {
@@ -84,6 +86,8 @@ CORS_ALLOWED_METHOD = [
     "DELETE",
     "POST"
 ]
+
+# CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -135,7 +139,10 @@ REST_FRAMEWORK = {
     )
 }
 
-
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': datetime.timedelta(minutes=10),
+    'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=1),
+}
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
 

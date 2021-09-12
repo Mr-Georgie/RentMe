@@ -39,6 +39,11 @@ class UserManager(BaseUserManager):
         
         return user
 
+AUTH_PROVIDERS = {
+    'facebook': 'facebook', 'twitter': 'twitter',
+    'google': 'google', 'email':'email'
+}
+
 # Model for creating user fields
 class User(AbstractBaseUser, PermissionsMixin):
     
@@ -49,6 +54,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    auth_provider = models.CharField(
+        max_length=255, blank=False,
+        null=False, default=AUTH_PROVIDERS.get('email')
+    )
     
     USERNAME_FIELD = 'email' # to enable login with email instead of username (default)
     REQUIRED_FIELDS = ['username']

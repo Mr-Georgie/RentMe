@@ -23,9 +23,9 @@ from drf_yasg import openapi
 
 schema_view = get_schema_view(
    openapi.Info(
-      title="BASIC AUTHENTICATION API",
+      title="RENT ME API",
       default_version='v1',
-      description="Test description",
+      description="A rest API for the RentMe App",
       terms_of_service="https://www.test.com/policies/terms/",
       contact=openapi.Contact(email="contact@snippets.local"),
       license=openapi.License(name="Test License"),
@@ -36,9 +36,16 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('v1/', include('authentication.urls')),
+    path('auth/', include('authentication.urls')),
     # path('api/all_products/', include('all_products.urls')),
     # path('api/user_products/', include('user_products.urls')),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
+    path('api/api.json/', schema_view.without_ui(cache_timeout=0), name='schema-swagger-ui'),
+    
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    
+    path('social_auth/', include(('social_auth.urls', 'social_auth'),
+                                 namespace="social_auth"))
+    
+    
 ]
