@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 import os
 import datetime
+import dj_database_url
 # from dotenv import load_dotenv
 
 # load_dotenv()
@@ -130,6 +131,11 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+
+dj_from_env = dj_database_url.config()
+DATABASES['default'].update(dj_from_env)
 
 # specify keys returned in cases like errors
 REST_FRAMEWORK = {
