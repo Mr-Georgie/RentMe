@@ -49,3 +49,6 @@ urlpatterns = [
     
     
 ]
+
+handler404 = 'utils.views.error_404'
+handler500 = 'utils.views.error_500'
