@@ -1,5 +1,3 @@
-db.sqlite3
-
 # virtual environment
 venv/
 static
