@@ -58,8 +58,8 @@ INSTALLED_APPS = [
     'authentication',
     'drf_yasg',
     'social_auth',
-    # 'all_products',
-    # 'user_products',
+    'user_dashboard',
+    'products',
     'rest_framework_simplejwt.token_blacklist',
 ]
 
@@ -139,6 +139,8 @@ DATABASES['default'].update(dj_from_env)
 
 # specify keys returned in cases like errors
 REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 5,
     'NON_FIELD_ERRORS_KEY': 'error',
     'EXCEPTION_HANDLER': 'utils.exceptionhandler.custom_exception_handler',
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -203,5 +205,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-
+# asdfgh123
 django_heroku.settings(locals())

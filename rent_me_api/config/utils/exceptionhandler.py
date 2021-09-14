@@ -33,7 +33,7 @@ def custom_exception_handler(exc, context):
 
 def _handle_authentication_error(exc, context, response):
     response.data ={
-        'error': 'Please login to proceed',
+        'error': "You're not authorized to do this. Please login..",
         'status_code' : response.status_code
     }
     
