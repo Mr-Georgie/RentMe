@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'user_dashboard',
     'products',
     'rest_framework_simplejwt.token_blacklist',
+    'cart'
 ]
 
 SWAGGER_SETTINGS = {
