@@ -8,6 +8,7 @@ class Cart(models.Model):
     product_id = models.IntegerField(unique=True)
     name = models.CharField(max_length=200)
     price = models.IntegerField()
+    image = models.URLField()
     quantity = models.PositiveIntegerField(default=1)
     
 # class CartItems(models.Model):

@@ -15,13 +15,15 @@ from drf_yasg import openapi
 class CartAPIView(views.APIView):
     
     permission_classes = (permissions.IsAuthenticated,IsOwner,)
-    cart_items = openapi.Parameter('cart_items', in_=openapi.IN_QUERY, 
-                                description='Description', type=openapi.TYPE_OBJECT)
+    # cart_items = openapi.Parameter('cart_items', in_=openapi.IN_QUERY, 
+    #                             description='Description', type=openapi.TYPE_OBJECT)
     
-    @swagger_auto_schema(manual_parameters=[cart_items])
+    # @swagger_auto_schema(manual_parameters=[cart_items])
     def post(self, request, *args, **kwargs):
+        # print(json.dumps(request.data))
         serializer = CartSerializer(
-            data=json.loads(request.GET.get('cart_items')), # convert post data to json
+            # data=json.loads(request.GET.get('cart_items')),  convert post data to json for swaggerui
+            data=request.data,
             context = {'request': request} # to enable api-view get current userid
         )
 

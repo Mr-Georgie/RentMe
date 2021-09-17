@@ -12,7 +12,7 @@ class CartSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Cart
-        fields = ['id','owner','product_id','name','price','quantity']
+        fields = ['id','owner','product_id','name','price','image','quantity']
         
     def validate_product_id(self, value):
         # print(Products.objects.filter(id=value).exists())
@@ -23,10 +23,12 @@ class CartSerializer(serializers.ModelSerializer):
     
 class CartUpdateSerializer(serializers.ModelSerializer):
     owner = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    name = serializers.CharField(read_only=True)
+    product_id = serializers.IntegerField(read_only=True)
     
     class Meta:
         model = Cart
-        fields = ['id','owner','price','quantity']
+        fields = ['id','name','product_id','owner','price','quantity']
         
         
     # def validate(self, attrs):

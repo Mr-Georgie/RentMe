@@ -2,10 +2,11 @@ from django.shortcuts import render
 from .serializers import AllProductSerializer
 from rest_framework.generics import RetrieveAPIView
 from .models import Products
-from rest_framework import views
+from rest_framework import views, status
 from .permissions import IsOwner
 from rest_framework.response import Response
 from pagination.paginationhandler import CustomPaginator
+from rest_framework.parsers import MultiPartParser, FormParser
 # Create your views here.
 
 class AllProductListAPIView(views.APIView):
@@ -25,3 +26,16 @@ class ProductDetailsAPIView(RetrieveAPIView):
     queryset = Products.objects.all()
     lookup_field = "id"
       
+
+# class ProductUpload(views.APIView):
+    
+#     parser_classes = [MultiPartParser, FormParser]
+    
+#     def post(self, request, format=None):
+#         print(request.data)
+#         serializer = ProductUploadSerializer(data=request.data)
+#         if serializer.is_valid():
+#             serializer.save()
+#             return Response(serializer.data, status=status.HTTP_201_CREATED)
+#         else:
+#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

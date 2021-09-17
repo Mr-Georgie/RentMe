@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import UserProductDetailsAPIView, UserProductListAPIView, PasswordTokenCheck, ResetPasswordByEmail, SetNewPasswordAPIView, LogoutAPIView
+from .views import UserProductDetailsAPIView,UserProductCreate, UserProductListAPIView, PasswordTokenCheck, ResetPasswordByEmail, SetNewPasswordAPIView, LogoutAPIView
 
 urlpatterns = [
+    path('products-create/', UserProductCreate.as_view(), name='user-products-create'),
     path('products-list/', UserProductListAPIView.as_view(), name='user-products-list'),
     path('product-details/<int:id>', UserProductDetailsAPIView.as_view(), name='user-product-details'),
     path('password-reset-request/', ResetPasswordByEmail.as_view(), name='password-reset-request'),

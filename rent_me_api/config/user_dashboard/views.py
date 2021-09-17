@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .serializers import UserProductSerializer
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView
+from .serializers import UserProductSerializer, ProductUploadSerializer
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, RetrieveAPIView 
 from products.models import Products
 from rest_framework import permissions, views, status
 from .permissions import IsOwner
@@ -18,18 +18,29 @@ from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.utils.encoding import force_str, smart_str, smart_bytes, DjangoUnicodeDecodeError
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.http import HttpResponsePermanentRedirect
+from rest_framework.parsers import MultiPartParser, FormParser
 
 class CustomRedirect(HttpResponsePermanentRedirect):
     allowed_schemes = ['http', 'https']
+    
+class UserProductCreate(views.APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+    parser_classes = [MultiPartParser, FormParser]
+    
+    def post(self, request, format=None):
+        print(request.data)
+        serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
-class UserProductListAPIView(ListCreateAPIView):
+class UserProductListAPIView(RetrieveAPIView):
     serializer_class = UserProductSerializer
     queryset = Products.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
-    
-    
-    def perform_create(self, serializer):
-        return serializer.save(owner=self.request.user)
     
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user)
@@ -40,11 +51,9 @@ class UserProductDetailsAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,IsOwner,)
     lookup_field = "id"
     
-    def perform_create(self, serializer):
-        return serializer.save(owner=self.request.user)
-    
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user)
+    
       
 class ResetPasswordByEmail(GenericAPIView):
     serializer_class = ResetPasswordByEmailSerializer
