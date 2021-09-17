@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .serializers import UserProductSerializer, ProductUploadSerializer
-from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, RetrieveAPIView 
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, GenericAPIView, ListAPIView 
 from products.models import Products
 from rest_framework import permissions, views, status
 from .permissions import IsOwner
@@ -37,7 +37,7 @@ class UserProductCreate(views.APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 
-class UserProductListAPIView(RetrieveAPIView):
+class UserProductListAPIView(ListAPIView):
     serializer_class = UserProductSerializer
     queryset = Products.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
