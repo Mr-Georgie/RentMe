@@ -24,3 +24,4 @@ class Products(models.Model):
     date_created = models.DateField(auto_now_add=True)
     on_loan = models.BooleanField(default=False)
     image = models.ImageField(_('Image'), upload_to=upload_to, default='products/default.jpg')
+    is_verified = models.BooleanField(default=False)

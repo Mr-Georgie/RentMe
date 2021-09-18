@@ -22,5 +22,5 @@ class Util:
             body=data['email_body'],
             to=[data['send_to']]
         )
-        email.send()
-        EmailThread(email).start()
+        # email.send()
+        EmailThread(email.send()).start()

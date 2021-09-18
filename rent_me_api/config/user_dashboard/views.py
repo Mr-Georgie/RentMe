@@ -32,6 +32,15 @@ class UserProductCreate(views.APIView):
         serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
         if serializer.is_valid():
             serializer.save()
+            
+            data = {
+                'email_body': 'Hi Admin, a new product has been added by ' + request.user.email +'. Please verify',
+                'email_subject': 'Product Verification on Rent Me',
+                'send_to': 'george.isiguzo@yahoo.com'
+            }
+            
+            Util.send_email(data)
+            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
