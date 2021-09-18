@@ -12,6 +12,7 @@ class Products(models.Model):
         ('GADGETS','GADGETS'),
         ('ELECTRONICS','ELECTRONICS'),
         ('AUTOMOBILE','AUTOMOBILE'),
+        ('OFFICE SPACE','OFFICE SPACE'),
         ('AGRICULTURAL','AGRICULTURAL')
     ]
     
