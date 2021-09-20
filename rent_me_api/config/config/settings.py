@@ -81,7 +81,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:5500",
     "http://web.postman.co",
-    "https://614780a45e58ced59a9c508b--adoring-allen-0032c2.netlify.app/"
+    "https://614780a45e58ced59a9c508b--adoring-allen-0032c2.netlify.app"
 ]
 
 CORS_ALLOWED_METHOD = [
