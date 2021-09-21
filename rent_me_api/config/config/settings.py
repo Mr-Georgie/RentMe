@@ -229,5 +229,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = env('EMAIL_HOST')
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-# asdfgh123
+
+SENDGRID_API_KEY = env('SENDGRID_API_KEY')
+
 django_heroku.settings(locals())
