@@ -33,7 +33,7 @@ class Util:
             print(response.body)
             print(response.headers)
         except Exception as e:
-            print(e.message)
+            print(e)
         
         # email = EmailMessage(
         #     subject=data['email_subject'], 
