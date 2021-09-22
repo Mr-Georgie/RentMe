@@ -22,6 +22,7 @@ from django.conf import settings
 from .renderers import UserRenderer
 from django.shortcuts import redirect
 from django.http import HttpResponsePermanentRedirect
+from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework_simplejwt.tokens import RefreshToken
 import jwt 
 from drf_yasg.utils import swagger_auto_schema # to edit the VerifyEmail class
@@ -51,7 +52,7 @@ class RegisterView(generics.GenericAPIView):
         abs_url = 'http://' + current_site + relative_link + '?token=' + str(token)
         
         email_body =  {
-            'message': 'Hi ' + user.username +'. Please use link below to verify your email:',
+            'message': 'Hi ' + user.username +'. Thank you for signing up on RentMe. Please use link below to verify your email:',
             'link': abs_url
         }
         
@@ -67,6 +68,8 @@ class RegisterView(generics.GenericAPIView):
         return Response(user_data, status=status.HTTP_201_CREATED)
         
 class VerifyEmail(views.APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'email_verified.html'
     
     serializer_class = EmailVerificationSerializer
     token_param_config = openapi.Parameter('token', in_=openapi.IN_QUERY, 
@@ -82,7 +85,10 @@ class VerifyEmail(views.APIView):
                 user.is_verified = True
                 user.save()
             
-            return Response({'message':'Email successfully activated'}, status=status.HTTP_200_OK)
+            return Response({
+                'message':'Your email has been successfully activated',
+                'user': user.email
+                }, status=status.HTTP_200_OK)
         
         except jwt.ExpiredSignatureError as identifier:
             return Response({'error':'Activation link expired'}, status=status.HTTP_400_BAD_REQUEST)
@@ -109,6 +115,5 @@ class AuthUserAPIView(generics.GenericAPIView):
         return Response(serializer.data)
     
     
-    
-    
+
     

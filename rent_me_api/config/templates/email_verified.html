@@ -1,0 +1,80 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Email Verified - RentMe App</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Fontawesome CSS-->
+        <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+  </head>
+<body>
+    <section style="">
+      <div class="container py-5">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-8 col-lg-6 col-xl-4">
+            <div class="card rounded-3">
+              <div class="card-body mx-1 my-2">
+                <div class="d-flex align-items-center">
+                  {% comment %} <div>
+                    <i class="fab fa-cc-visa fa-4x text-black pe-3"></i>
+                  </div> {% endcomment %}
+                  <div>
+                    <p class="d-flex flex-column mb-0">
+                      <b> Dear {{user}}, </b>
+                      <span class="small text-muted"> {{message}}.</span>
+                      <span class="small text-muted">You can now login to your account.</span>
+                      <span class="small text-muted">Thank you</span>
+                    </p>
+                  </div>
+                </div>
+                
+                {% comment %} Image {% endcomment %}
+                <div class="pt-3">
+                  <div class="d-flex flex-row pb-3">
+                    <div
+                      class="d-flex w-100 p-3 ">
+                      <div class="d-flex align-items-center pe-3">
+                        <img class='img-fluid' 
+                        src="https://image.freepik.com/free-vector/green-hand-drawn-partnership-clipart_53876-115985.jpg" />
+                      </div>
+                      <div class="d-flex flex-column">
+                        
+                      </div>
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+
+                {% comment %} footer {% endcomment %}
+                <div class="d-flex justify-content-between align-items-center pb-1">
+                  <a href="https://614780a45e58ced59a9c508b--adoring-allen-0032c2.netlify.app/" class="text-muted">Go back to RentMe</a>
+                  {% comment %} <button type="button" class="btn btn-primary btn-lg">Pay amount</button> {% endcomment %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+        <!-- Bootstrap core JS-->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <!-- JQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<html>
+<body>
+<h3 style="font-size:80px">Proceed to checkout page</h3>
+<form>
+    <button style="font-size:60px" class="btn btn-outline-success btn-rounded" type="button" 
+                          data-mdb-ripple-color="dark"
+                          onClick="makePayment()"> CHECKOUT
+    </button>
+</form>
+
+<script>
+
+  function makePayment() {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == XMLHttpRequest.DONE) {
+            //console.log(xhr.response);
+            //console.log(readBody(xhr));
+            window.location.href = xhr.responseURL
+        }
+    }
+    xhr.open("POST", "http://127.0.0.1:8000/payment-page/transfer/", true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    xhr.send(JSON.stringify({
+        "amount":"1000",
+        "currency":"NGN",
+        "country": "NG",
+        "email": "senderemail@gmail.com",
+        "phone_number": "08102909304",
+        "name": "George Isiguzo",
+        "receiver_email": "george.isiguzo@yahoo.com",
+        "receiver_bank_accountnum": "0059227130",
+        "receiver_bank_name": "Access-bank"
+    }));
+  }
+</script>
+</body>
+</html>

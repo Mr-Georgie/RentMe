@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'products',
     'rest_framework_simplejwt.token_blacklist',
     'cart',
+    'payment',
     'cloudinary',
     'cloudinary_storage',
 ]
@@ -115,7 +116,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -207,7 +208,11 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+STATICFILES_DIRS = [str(BASE_DIR.joinpath('static'))]
+
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static')
 
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -231,5 +236,14 @@ EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
 
 SENDGRID_API_KEY = env('SENDGRID_API_KEY')
+
+RAVE_PUBLIC_KEY = env('RAVE_PUBLIC_KEY')
+RAVE_SECRET_KEY = env('RAVE_SECRET_KEY')
+
+RELOADLY_CLIENT_ID = env('RELOADLY_CLIENT_ID')
+RELOADLY_CLIENT_SECRET = env('RELOADLY_CLIENT_SECRET')
+
+GOOGLE_CLIENT_ID = env('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = env('GOOGLE_CLIENT_SECRET')
 
 django_heroku.settings(locals())

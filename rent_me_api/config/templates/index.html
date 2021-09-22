@@ -1,0 +1,159 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Payment Options - RentMe App</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Bootstrap -->
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Fontawesome CSS-->
+        <link href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+  </head>
+<body>
+    <section style="">
+      <div class="container py-5">
+        <div class="row d-flex justify-content-center">
+          <div class="col-md-8 col-lg-6 col-xl-4">
+            <div class="card rounded-3">
+              <div class="card-body mx-1 my-2">
+                <div class="d-flex align-items-center">
+                  {% comment %} <div>
+                    <i class="fab fa-cc-visa fa-4x text-black pe-3"></i>
+                  </div> {% endcomment %}
+                  <div>
+                    <p class="d-flex flex-column mb-0">
+                      <b>Hi, {{name}}</b>
+                      <span class="small text-muted">Please select your payment option below:</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="pt-3">
+                  <div class="d-flex flex-row pb-3">
+                    <div
+                      class="d-flex w-100 p-3 align-items-center"
+                      style="background-color: rgba(18, 101, 241, 0.07);"
+                    >
+                      <div class="d-flex align-items-center pe-3">
+                        
+                      </div>
+                      <div class="d-flex flex-column">
+                        
+                        <form>
+                          <script src="https://checkout.flutterwave.com/v3.js"></script>
+                          <button class="btn btn-outline-primary btn-rounded" type="button" 
+                          data-mdb-ripple-color="dark"
+                          onClick="makePayment()"> Pay with Flutterwave
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-row pb-3">
+                    <div
+                      class="d-flex w-100 p-3 align-items-center"
+                      style="background-color: rgba(18, 101, 241, 0.07);"
+                    >
+                      <div class="d-flex align-items-center pe-3">
+                        
+                      </div>
+                      <div class="d-flex flex-column">
+                        
+                        <form>
+                          <script src="https://checkout.flutterwave.com/v3.js"></script>
+                          <button class="btn btn-outline-success btn-rounded" type="button" 
+                          data-mdb-ripple-color="dark"
+                          onClick="makePayment()"> Pay with Reloadly
+                          </button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center pb-1">
+                  <a href="#!" class="text-muted">Go back</a>
+                  {% comment %} <button type="button" class="btn btn-primary btn-lg">Pay amount</button> {% endcomment %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+<script>
+  const publicKey = "{{ public_key }}";
+  const merchant_ref = "RentMeApp-" + "{{ merchant_ref }}"
+
+  function makePayment() {
+    FlutterwaveCheckout({
+      public_key: publicKey,
+      tx_ref: merchant_ref,
+      amount: "{{ amount }}",
+      currency: "{{currency}}",
+      country: "{{country}}",
+      payment_options: "card,banktransfer,mobilemoney",
+      //redirect_url: // specified redirect URL
+        //"https://rent-me-api.herokuapp.com/",
+      meta: {
+        receiver_email: "{{receiver_email}}",
+        receiver_bank_accountnum: "{{receiver_bank_accountnum}}",
+        receiver_bank_name: "{{receiver_bank_name}}"
+      },
+      customer: {
+        email: "{{email}}",
+        phone_number: "{{phone_number}}",
+        name: "{{name}}",
+      },
+      callback: function (response) { // specified callback function
+            console.log("This is the response returned after a charge", response);
+            var status = response.status;
+            var customerName = response.customer.name
+            var transcId = response.transaction_id
+            var transcRef = response.tx_ref
+            var receiver_info = "{{receiver_bank_name}} {{receiver_bank_accountnum}} {{receiver_email}}"
+            var amount = "{{ amount }}"
+            var currency = "{{currency}}"
+            if (
+                status == "successful"
+            ) {
+                document.location.href = "success-page"+"?status="+status+'&customer='+customerName+'&transcId='+transcId+'&transcRef='+transcRef+'&receiver_info='+receiver_info+'&amount='+amount+'&currency='+currency
+                    // redirect to a success page
+            } else {
+                // redirect to a failure page.
+                document.location.href = "error-page"
+            }
+            x.close();
+      },
+      onclose: function() {
+        // close modal
+      },
+      customizations: {
+        title: "Rent Me App",
+        description: "Payment for items in cart",
+        logo: "https://thumbs.dreamstime.com/b/demo-icon-demo-147077326.jpg",
+      },
+    });
+  }
+</script>
+
+        <!-- Bootstrap core JS-->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+        <!-- JQuery -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</body>
+</html>
