@@ -15,6 +15,7 @@ from rest_framework.response import Response
 from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer
 from .models import User
 from .utils import Util
+from .sendgrid import SendEmail
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse # reverse is used to get url name from url path
 from django.conf import settings
@@ -60,7 +61,8 @@ class RegisterView(generics.GenericAPIView):
             'send_to': user.email
         }
         
-        Util.send_email(data)
+        # Util.send_email(data)
+        SendEmail(data)
         
         return Response(user_data, status=status.HTTP_201_CREATED)
         
