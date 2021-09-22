@@ -30,4 +30,4 @@ def SendEmail(data):
         return str(response.status_code)
     except Exception as e:
         print("Error: {0}".format(e))
-    return str(e)
+        return str(e)
