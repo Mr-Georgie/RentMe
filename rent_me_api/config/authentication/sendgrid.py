@@ -27,6 +27,7 @@ def SendEmail(data):
         print(f"Response Body: {body} ")
         print(f"Response Headers: {headers} ")
         print("Message Sent!")
+        return str(response.status_code)
     except Exception as e:
         print("Error: {0}".format(e))
-    return str(response.status_code)
+    return str(e)
