@@ -1,6 +1,5 @@
 # virtual environment
 venv/
-static
 
 # Django
 *.log
