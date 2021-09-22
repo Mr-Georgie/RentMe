@@ -19,7 +19,8 @@
             window.location.href = xhr.responseURL
         }
     }
-    xhr.open("POST", "http://127.0.0.1:8000/payment-page/transfer/", true);
+    //"http://127.0.0.1:8000/payment-page/transfer/" for local server
+    xhr.open("POST", "https://rent-me-api.herokuapp.com/payment-page/transfer/", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
     xhr.send(JSON.stringify({
