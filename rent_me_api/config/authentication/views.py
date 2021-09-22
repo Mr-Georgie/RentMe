@@ -61,8 +61,8 @@ class RegisterView(generics.GenericAPIView):
             'send_to': user.email
         }
         
-        # Util.send_email(data)
-        SendEmail(data)
+        Util.send_email(data)
+        # SendEmail(data)
         
         return Response(user_data, status=status.HTTP_201_CREATED)
         
