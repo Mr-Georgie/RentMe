@@ -27,15 +27,13 @@ class ProductDetailsAPIView(RetrieveAPIView):
     lookup_field = "id"
       
 
-# class ProductUpload(views.APIView):
+class ProductCategoryList(views.APIView):
+    serializer_class = AllProductSerializer
+    products = Products.CATEGORY_OPTIONS
+    category = []
     
-#     parser_classes = [MultiPartParser, FormParser]
-    
-#     def post(self, request, format=None):
-#         print(request.data)
-#         serializer = ProductUploadSerializer(data=request.data)
-#         if serializer.is_valid():
-#             serializer.save()
-#             return Response(serializer.data, status=status.HTTP_201_CREATED)
-#         else:
-#             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request):
+        for product in self.products:
+            self.category.append(product[0])   
+        
+        return Response({"categories": self.category }, status=status.HTTP_200_OK)
