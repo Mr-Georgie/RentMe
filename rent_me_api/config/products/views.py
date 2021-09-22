@@ -30,10 +30,11 @@ class ProductDetailsAPIView(RetrieveAPIView):
 class ProductCategoryList(views.APIView):
     serializer_class = AllProductSerializer
     products = Products.CATEGORY_OPTIONS
-    category = []
+    categories = []
     
     def get(self, request):
         for product in self.products:
-            self.category.append(product[0])   
+            if product[0] not in self.categories:
+                self.categories.append(product[0])
         
-        return Response({"categories": self.category }, status=status.HTTP_200_OK)
+        return Response({"categories": self.categories }, status=status.HTTP_200_OK)
