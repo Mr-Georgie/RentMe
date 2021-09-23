@@ -6,6 +6,9 @@ venv/
 *.log
 *.pot
 *.pyc
+viewsssss.py
+demo.html
+
 *__pycache__
 /.env
 

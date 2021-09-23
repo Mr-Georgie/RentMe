@@ -8,6 +8,6 @@ urlpatterns = [
     path('flutterwave/success-page', SuccessTemplateView.as_view(), name='success-page'),
     path('flutterwave/error-page', ErrorTemplateView.as_view(), name='error-page'),
     
-    path('transfer/', PaymentAPIView.as_view(), name='transfer'),
-    path('frontend-demo/', DemoTemplateView.as_view(), name='frontend-demo'),
+    path('start-transaction/', PaymentAPIView.as_view(), name='start-transaction'),
+    # path('frontend-demo/', DemoTemplateView.as_view(), name='frontend-demo'),
 ]

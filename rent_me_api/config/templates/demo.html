@@ -19,20 +19,15 @@
             window.location.href = xhr.responseURL
         }
     }
-    //"http://127.0.0.1:8000/payment-page/transfer/" for local server
-    xhr.open("POST", "https://rent-me-api.herokuapp.com/payment-page/transfer/", true);
+    //"http://127.0.0.1:8000/payment-page/start-transaction/" for local server
+    // https://rent-me-api.herokuapp.com/payment-page/start-transaction/ for live server
+    xhr.open("POST", "http://127.0.0.1:8000/payment-page/start-transaction/", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
     xhr.send(JSON.stringify({
-        "amount":"1000",
         "currency":"NGN",
-        "country": "NG",
-        "email": "senderemail@gmail.com",
-        "phone_number": "08102909304",
-        "name": "George Isiguzo",
-        "receiver_email": "george.isiguzo@yahoo.com",
-        "receiver_bank_accountnum": "0059227130",
-        "receiver_bank_name": "Access-bank"
+        "product_id": 1,
+        "amount":"1000"
     }));
   }
 </script>

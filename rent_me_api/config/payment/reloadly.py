@@ -22,21 +22,33 @@ def get_authenticated():
 
     return json.loads(response.text)
 
-def topup_product_owner(random_string,receiver_details, sender_details, access_token):
-    url = "https://topups.reloadly.com/topups"
+def topup_product_owner(random_string,receiver_cty, receiver_num, sender_cty, sender_num, access_token):
+    rc = receiver_cty
+    sc = sender_cty
+    
+    url = "https://topups-sandbox.reloadly.com/topups"
 
     payload = json.dumps({
-    "operatorId": "685",
-    "amount": "10",
+    "operatorId": "341",
+    "amount": "100",
     "customIdentifier": "RentMe-"+random_string,
     "recipientPhone": {
-        "countryCode": receiver_details['country'],
-        "number": receiver_details['number']
+        "countryCode": "NG",
+        "number": "08131191073"
     },
+    # "recipientPhone": { for live server
+    #     "countryCode": receiver_cty,
+    #     "number": receiver_num
+    # },
+    # "senderPhone": { for live server
+    #     "countryCode": sender_cty,
+    #     "number": sender_num
+    # }
     "senderPhone": {
-        "countryCode": sender_details['country'],
-        "number": sender_details['number']
+        "countryCode": "NG",
+        "number": "08144149628"
     }
+    
     })
     headers = {
     'Authorization': 'Bearer '+access_token,

@@ -15,6 +15,10 @@ class Products(models.Model):
         ('OFFICE SPACE','OFFICE SPACE'),
         ('AGRICULTURAL','AGRICULTURAL')
     ]
+    PAYMENT_OPTIONS = [
+        ('AIRTIME TOPUP', 'AIRTIME TOPUP'),
+        ('CASH TRANSFER', 'CASH TRANSFER')
+    ]
     
     name = models.CharField(max_length = 200)
     category = models.CharField(choices=CATEGORY_OPTIONS, max_length=255)
@@ -25,3 +29,4 @@ class Products(models.Model):
     on_loan = models.BooleanField(default=False)
     image = models.ImageField(_('Image'), upload_to=upload_to, default='products/default.jpg')
     is_verified = models.BooleanField(default=False)
+    payment_method = models.CharField(choices=PAYMENT_OPTIONS, max_length=255, default='AIRTIME TOPUP')

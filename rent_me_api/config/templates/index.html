@@ -105,15 +105,8 @@
       tx_ref: merchant_ref,
       amount: "{{ amount }}",
       currency: "{{currency}}",
-      country: "{{country}}",
+      //country: "{{country}}",
       payment_options: "card,banktransfer,mobilemoney",
-      //redirect_url: // specified redirect URL
-        //"https://rent-me-api.herokuapp.com/",
-      meta: {
-        receiver_email: "{{receiver_email}}",
-        receiver_bank_accountnum: "{{receiver_bank_accountnum}}",
-        receiver_bank_name: "{{receiver_bank_name}}"
-      },
       customer: {
         email: "{{email}}",
         phone_number: "{{phone_number}}",
@@ -121,17 +114,19 @@
       },
       callback: function (response) { // specified callback function
             console.log("This is the response returned after a charge", response);
-            var status = response.status;
-            var customerName = response.customer.name
+            var status = response.status
+            var customer_info = response.customer.name + ' ' + response.customer.phone_number + " {{country}}"
             var transcId = response.transaction_id
             var transcRef = response.tx_ref
-            var receiver_info = "{{receiver_bank_name}} {{receiver_bank_accountnum}} {{receiver_email}}"
+  // var receiver_info = "{{receiver_bank_name}} {{receiver_bank_accountnum}} {{receiver_email}} {{receiver_country}} {{receiver_phone}}"          
+            var receiver_info = "Access {{receiver_bank_accountnum}} {{receiver_email}} {{receiver_country}} {{receiver_phone}}"
             var amount = "{{ amount }}"
             var currency = "{{currency}}"
+            var payment_method = "{{payment_method}}"
             if (
                 status == "successful"
             ) {
-                document.location.href = "success-page"+"?status="+status+'&customer='+customerName+'&transcId='+transcId+'&transcRef='+transcRef+'&receiver_info='+receiver_info+'&amount='+amount+'&currency='+currency
+                document.location.href = "success-page"+"?status="+status+'&customer_info='+customer_info+'&transcId='+transcId+'&transcRef='+transcRef+'&receiver_info='+receiver_info+'&amount='+amount+'&currency='+currency+'&payment_method='+payment_method
                     // redirect to a success page
             } else {
                 // redirect to a failure page.

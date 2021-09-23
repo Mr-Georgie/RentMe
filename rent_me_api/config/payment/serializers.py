@@ -3,10 +3,14 @@ from .models import Transaction
 
 
 class TransactionSerializer(serializers.ModelSerializer):
-    
+    amount = serializers.IntegerField(required=True)
+    currency = serializers.CharField(required=True)
+    product_id = serializers.IntegerField(required=True)
+        
+        
     class Meta:
         model = Transaction
-        fields = '__all__'
+        fields = ['amount', 'currency', 'product_id']
         
     def create(self, validated_data):
         return Transaction.objects.create(**validated_data)
