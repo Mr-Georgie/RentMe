@@ -106,7 +106,7 @@
       amount: "{{ amount }}",
       currency: "{{currency}}",
       //country: "{{country}}",
-      payment_options: "card,banktransfer,mobilemoney",
+      payment_options: "",
       customer: {
         email: "{{email}}",
         phone_number: "{{phone_number}}",
@@ -118,7 +118,7 @@
             var customer_info = response.customer.name + ' ' + response.customer.phone_number + " {{country}}"
             var transcId = response.transaction_id
             var transcRef = response.tx_ref
-  // var receiver_info = "{{receiver_bank_name}} {{receiver_bank_accountnum}} {{receiver_email}} {{receiver_country}} {{receiver_phone}}"          
+// var receiver_info = "{{receiver_bank_name}} {{receiver_bank_accountnum}} {{receiver_email}} {{receiver_country}} {{receiver_phone}}"          
             var receiver_info = "Access {{receiver_bank_accountnum}} {{receiver_email}} {{receiver_country}} {{receiver_phone}}"
             var amount = "{{ amount }}"
             var currency = "{{currency}}"
