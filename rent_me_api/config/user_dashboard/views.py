@@ -19,6 +19,8 @@ from django.utils.encoding import force_str, smart_str, smart_bytes, DjangoUnico
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.http import HttpResponsePermanentRedirect
 from rest_framework.parsers import MultiPartParser, FormParser
+from drf_yasg.utils import swagger_auto_schema # to edit the VerifyEmail class
+from drf_yasg import openapi
 
 class CustomRedirect(HttpResponsePermanentRedirect):
     allowed_schemes = ['http', 'https']
@@ -26,11 +28,12 @@ class CustomRedirect(HttpResponsePermanentRedirect):
 class UserProductCreate(views.APIView):
     """
     Allows an authenticated user to add product or property for rent. Content-type should be multipart form to allow for image file upload
-    Notifies app admin at the once image is added.
+    Notifies app admin at the once image is added. Product cannot be 
     """
     permission_classes = (permissions.IsAuthenticated,)
     parser_classes = [MultiPartParser, FormParser]
     
+    @swagger_auto_schema(request_body=ProductUploadSerializer)
     def post(self, request, format=None):
         serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
         if serializer.is_valid():
