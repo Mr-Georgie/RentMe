@@ -50,8 +50,8 @@ class PaymentAPIView(APIView):
         product_id = resp['product_id']
         
         merchant_ref = getPassword(32)
-        fallback_url = 'http://127.0.0.1:8000/payment-page/flutterwave/'
-        # fallback_url = 'https://rent-me-api.herokuapp.com/payment-page/flutterwave/'
+        # fallback_url = 'http://127.0.0.1:8000/payment-page/flutterwave/'
+        fallback_url = 'https://rent-me-api.herokuapp.com/payment-page/flutterwave/'
         
         
         return HttpResponseRedirect(redirect_to=fallback_url + (f'?amount={amount} &currency={currency}'

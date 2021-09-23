@@ -21,7 +21,7 @@
     }
     //"http://127.0.0.1:8000/payment-page/checkout/" for local server
     // https://rent-me-api.herokuapp.com/payment-page/checkout/ for live server
-    xhr.open("POST", "http://127.0.0.1:8000/payment-page/checkout/", true);
+    xhr.open("POST", "https://rent-me-api.herokuapp.com/payment-page/checkout/", true);
     xhr.setRequestHeader('Content-Type', 'application/json');
     xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
     xhr.send(JSON.stringify({
