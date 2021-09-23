@@ -51,9 +51,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=255, unique=True, db_index=True)
     
     bank_account_number = models.PositiveIntegerField(default=1234567890)
-    bank_name = models.CharField(max_length=50, default='My_Bank')
-    country = models.CharField(max_length=50, default='Nigeria')
-    phone_number = models.CharField(max_length=50, default='+2348012345678')
+    bank_name = models.CharField(max_length=50, default='')
+    country = models.CharField(max_length=50, default='')
+    phone_number = models.CharField(max_length=50, default='')
     
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
