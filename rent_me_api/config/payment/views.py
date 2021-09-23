@@ -68,8 +68,8 @@ class PaymentTemplateView(APIView):
     public_key = settings.RAVE_PUBLIC_KEY
         
     def get(self, request):
-        # user = request.user
-        user = 1 # demo purposes
+        user = request.user
+        # user = 1 # demo purposes
         product_id = request.GET.get('product_id')
         merchant_ref = request.GET.get('merchant_ref')
         amount = request.GET.get('amount')
@@ -150,7 +150,7 @@ class SuccessTemplateView(APIView):
                 get_response = reloadly.topup_product_owner(getPassword(32),receiver_country, receiver_phone, 
                                         sender_country, sender_phone, reloadly_access_token)
             
-            print('reloadly error: ',get_response)
+            print('reloadly response: ',get_response)
             
             data = {
                 'amount': amount,
