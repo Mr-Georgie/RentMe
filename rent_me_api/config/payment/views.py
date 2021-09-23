@@ -7,7 +7,7 @@ from products.models import Products
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import viewsets
+from rest_framework import permissions
 from .models import Transaction
 from .serializers import TransactionSerializer
 from .sender_details import get_sender_details
@@ -36,8 +36,8 @@ class PaymentAPIView(APIView):
     Requires authentication. Handles POST request from the frontend. Cannot be tested on the documentation.
     Redirects the user to the flutterwave checkout page.
     """
-    
     serializer_class = TransactionSerializer
+    permission_classes = (permissions.IsAuthenticated,)
     
     @swagger_auto_schema(request_body=TransactionSerializer)
     def post(self, request):
@@ -62,7 +62,7 @@ class PaymentTemplateView(APIView):
     """
     The flutterwave Payment UI Generator. Receives request from the checkout endpoints
     """
-    
+    permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'index.html'
     public_key = settings.RAVE_PUBLIC_KEY
@@ -115,7 +115,7 @@ class SuccessTemplateView(APIView):
     """
     A Success page to be shown after successful payment
     """
-    
+    permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'success.html'
     secret_key = settings.RAVE_SECRET_KEY
@@ -188,6 +188,7 @@ class ErrorTemplateView(APIView):
     """
     An Error page when there is an error during payment
     """
+    permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'error.html'
     
@@ -200,6 +201,7 @@ class DemoTemplateView(APIView):
     """
     Mimics a typical frontend 'Proceed to checkout page'. Cannot be tested from this api doc
     """
+    permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'demo.html'
     
