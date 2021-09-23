@@ -9,5 +9,5 @@ urlpatterns = [
     path('flutterwave/error-page', ErrorTemplateView.as_view(), name='error-page'),
     
     path('checkout/', PaymentAPIView.as_view(), name='checkout'),
-    # path('frontend-demo/', DemoTemplateView.as_view(), name='frontend-demo'),
+    path('frontend-demo/', DemoTemplateView.as_view(), name='frontend-demo'),
 ]

@@ -10,7 +10,9 @@ from rest_framework.parsers import MultiPartParser, FormParser
 # Create your views here.
 
 class AllProductListAPIView(views.APIView):
-    
+    """
+    Returns a paginated list of all products in database. Doesn't require authentication. This endpoint is for app visitors
+    """
     def get(self, request):
         products = Products.objects.all()
         
@@ -22,12 +24,20 @@ class AllProductListAPIView(views.APIView):
         # return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ProductDetailsAPIView(RetrieveAPIView):
+    """
+    Gets a specific product in database by product id. Doesn't require authentication. This endpoint is for app visitors
+    """
+    
     serializer_class = AllProductSerializer
     queryset = Products.objects.all()
     lookup_field = "id"
       
 
 class ProductCategoryList(views.APIView):
+    """
+    Returns an array of product categories. Doesn't require authentication.
+    """
+    
     serializer_class = AllProductSerializer
     products = Products.CATEGORY_OPTIONS
     categories = []

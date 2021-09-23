@@ -24,11 +24,14 @@ class CustomRedirect(HttpResponsePermanentRedirect):
     allowed_schemes = ['http', 'https']
     
 class UserProductCreate(views.APIView):
+    """
+    Allows an authenticated user to add product or property for rent. Content-type should be multipart form to allow for image file upload
+    Notifies app admin at the once image is added.
+    """
     permission_classes = (permissions.IsAuthenticated,)
     parser_classes = [MultiPartParser, FormParser]
     
     def post(self, request, format=None):
-        print(request.data)
         serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
         if serializer.is_valid():
             serializer.save()
@@ -47,6 +50,9 @@ class UserProductCreate(views.APIView):
         
 
 class UserProductListAPIView(ListAPIView):
+    """
+    To view a json list of all products added by an authenticated user. Accepts page number and returns a pagination list too
+    """
     serializer_class = UserProductSerializer
     queryset = Products.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
@@ -55,6 +61,9 @@ class UserProductListAPIView(ListAPIView):
         return self.queryset.filter(owner=self.request.user)
     
 class UserProductDetailsAPIView(RetrieveUpdateDestroyAPIView):
+    """
+    Handles individual product edit and view. Uses product id as query parameter    
+    """
     serializer_class = UserProductSerializer
     queryset = Products.objects.all()
     permission_classes = (permissions.IsAuthenticated,IsOwner,)
@@ -65,6 +74,11 @@ class UserProductDetailsAPIView(RetrieveUpdateDestroyAPIView):
     
       
 class ResetPasswordByEmail(GenericAPIView):
+    """
+    Handles reset password request when user supplies email. Sends request email to user.
+    The frontend developer should supply a redirect url once the token is validated
+    and a fallback_url if there was an error while validating token.
+    """
     serializer_class = ResetPasswordByEmailSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
@@ -83,10 +97,11 @@ class ResetPasswordByEmail(GenericAPIView):
             relative_link = reverse('password-reset-verify',kwargs={'user_id': user_id,'token': token})
             abs_url = 'http://' + current_site + relative_link
             redirect_url = request.data.get('redirect_url', '')
+            fallback_url = request.data.get('fallback_url', '')
                 
             email_body =  {
                 'message': 'Hello, \n  Please use link below to reset your password:',
-                'link': abs_url + '?redirect_url=' + redirect_url
+                'link': abs_url + '?redirect_url=' + redirect_url + '&fallback_url=' + fallback_url
             }
                 
             data = {
@@ -102,14 +117,20 @@ class ResetPasswordByEmail(GenericAPIView):
         }, status=status.HTTP_200_OK)
         
 class PasswordTokenCheck(views.APIView):
+    """
+    Validates the token in the reset password email sent. It redirects the user to the set new password page created on the frontend.
+    Sends a user_id and token as query parameters.
+    """
+    
     def get(self, request, user_id, token):
         
         redirect_url = request.GET.get('redirect_url')
+        fallback_url = request.GET.get('fallback_url')
         
         try:
             id = smart_str(urlsafe_base64_decode(user_id))
             user = User.objects.get(id=id)
-            fallback_url = 'http://127.0.0.1:8000/admin'
+            # fallback_url = 'https://www.youtube.com'
             
             if not PasswordResetTokenGenerator().check_token(user, token):
                 
@@ -132,6 +153,13 @@ class PasswordTokenCheck(views.APIView):
             return CustomRedirect(redirect_url + '?token_valid=False')
             
 class SetNewPasswordAPIView(GenericAPIView):
+    """
+    The frontend developer will take the query parameters from the redirect_url (user_id & token).
+    This endpoint will accept a POST request that has the user_id, token and new user password.
+    If the user takes too long to reset password, the token expires and the user will have to make another rest password request.
+    If the user inputs his previous password, an authentication failed message will be returned: 'Please use another password'
+    """
+    
     serializer_class = SetNewPasswordSerializer
     
     def patch(self, request):
@@ -143,6 +171,8 @@ class SetNewPasswordAPIView(GenericAPIView):
         }, status=status.HTTP_200_OK)
  
 class LogoutAPIView(GenericAPIView):
+    """This receives an access token and adds it to blacklisted token. Therefore, the user will have to login again to create a new token that would be accepted"""
+    
     serializer_class = LogoutSerializer
     permission_classes = (permissions.IsAuthenticated,)
     

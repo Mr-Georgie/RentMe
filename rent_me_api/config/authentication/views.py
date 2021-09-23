@@ -1,15 +1,6 @@
-# from config.authentication.renderers import UserRenderer
 """
 my imports
 """
-# from django.contrib.auth.tokens import PasswordResetTokenGenerator
-# from django.utils.encoding import force_str, smart_str, smart_bytes, DjangoUnicodeDecodeError
-# from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
-# from inspect import currentframe
-# from django.shortcuts import redirect, render
-# from rest_framework.serializers import Serializer
-# from rest_framework.views import exception_handler, APIView
-
 from rest_framework import exceptions, generics, status, views, permissions
 from rest_framework.response import Response
 from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer
@@ -29,10 +20,15 @@ from drf_yasg.utils import swagger_auto_schema # to edit the VerifyEmail class
 from drf_yasg import openapi
 
 class CustomRedirect(HttpResponsePermanentRedirect):
+    """ Allow request from both http (dev server) & https (live server) """
+    
     allowed_schemes = ['http', 'https']
 
 # Create your views here.
 class RegisterView(generics.GenericAPIView):
+    """ 
+    Handles user registration. Returns a user data if signup was successful. Sends a verification mail to the user email
+    """
     
     serializer_class = RegisterSerializer
     renderer_classes = (UserRenderer, )
@@ -68,6 +64,11 @@ class RegisterView(generics.GenericAPIView):
         return Response(user_data, status=status.HTTP_201_CREATED)
         
 class VerifyEmail(views.APIView):
+    """ 
+    Handles email verification. Accepts a verification token and validates it. Error messages are either Token Expired or Invalid Token
+    If any of the two errors are shown, please contact admin at help@rentmeapp.com
+    """
+    
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'email_verified.html'
     
@@ -97,6 +98,9 @@ class VerifyEmail(views.APIView):
             return Response({'error':'Invalid token'}, status=status.HTTP_400_BAD_REQUEST)
         
 class LoginAPIView(generics.GenericAPIView):
+    """ 
+    Handles user login by validating user credentials. Returns an access and refresh token if validation is successful
+    """
     
     serializer_class = LoginSerializer
     

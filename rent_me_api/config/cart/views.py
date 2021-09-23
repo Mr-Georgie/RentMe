@@ -13,16 +13,17 @@ from drf_yasg import openapi
 
 
 class CartAPIView(views.APIView):
+    """
+    Requires authentication. Returns 401 Unauthorized if user is not logged in. The image field must be a valid url in database.
+    Error response: 'This product already exists in cart. Update the product quantity instead'
     
+    To update the product quantity, find the PUT endpoint below
+    """
     permission_classes = (permissions.IsAuthenticated,IsOwner,)
-    # cart_items = openapi.Parameter('cart_items', in_=openapi.IN_QUERY, 
-    #                             description='Description', type=openapi.TYPE_OBJECT)
     
-    # @swagger_auto_schema(manual_parameters=[cart_items])
+    @swagger_auto_schema(request_body=CartSerializer)
     def post(self, request, *args, **kwargs):
-        # print(json.dumps(request.data))
         serializer = CartSerializer(
-            # data=json.loads(request.GET.get('cart_items')),  convert post data to json for swaggerui
             data=request.data,
             context = {'request': request} # to enable api-view get current userid
         )
@@ -51,19 +52,23 @@ class CartAPIView(views.APIView):
     
 
 class GetUserCartItems(ListAPIView):
+    """
+        This should return a list of all the items for the currently authenticated user
+    """
     serializer_class = CartSerializer
     permission_classes = (permissions.IsAuthenticated,IsOwner,)
     
     def get_queryset(self):
-        """
-        This should return a list of all the items
-        for the currently authenticated user
-        """
         user = self.request.user
         return Cart.objects.filter(owner=user)
 
 
 class CartDetailsAPIView(RetrieveUpdateDestroyAPIView):
+    """
+        This is used to access a specific cart item by id for the currently authenticated user. Then, it can be retrieved, updated and deleted 
+        based on the endpoints : GET, PUT, PATCH & DELETE
+    """
+    
     serializer_class = CartUpdateSerializer
     queryset = Cart.objects.all()
     permission_classes = (permissions.IsAuthenticated,IsOwner,)

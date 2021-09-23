@@ -23,6 +23,7 @@ from . import reloadly, flutterwave
 import random, string, json
 
 class CustomRedirect(HttpResponsePermanentRedirect):
+    """ Allow request from both http (dev server) & https (live server) """
     allowed_schemes = ['http', 'https']
 
 def getPassword(length):
@@ -31,6 +32,11 @@ def getPassword(length):
     return ''.join(random.choice(str) for i in range(length))
 
 class PaymentAPIView(APIView):
+    """ 
+    Requires authentication. Handles POST request from the frontend. Cannot be tested on the documentation.
+    Redirects the user to the flutterwave checkout page.
+    """
+    
     serializer_class = TransactionSerializer
     
     @swagger_auto_schema(request_body=TransactionSerializer)
@@ -53,6 +59,10 @@ class PaymentAPIView(APIView):
   
 
 class PaymentTemplateView(APIView):
+    """
+    The flutterwave Payment UI Generator. Receives request from the checkout endpoints
+    """
+    
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'index.html'
     public_key = settings.RAVE_PUBLIC_KEY
@@ -102,6 +112,10 @@ class PaymentTemplateView(APIView):
         
         
 class SuccessTemplateView(APIView):
+    """
+    A Success page to be shown after successful payment
+    """
+    
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'success.html'
     secret_key = settings.RAVE_SECRET_KEY
@@ -168,10 +182,12 @@ class SuccessTemplateView(APIView):
                 'message': 'Please contact our help desk at help@rentmeapp.com',
                 'sender_name': sender_name
             }, status=status.HTTP_200_OK)
-        
-        
+          
         
 class ErrorTemplateView(APIView):
+    """
+    An Error page when there is an error during payment
+    """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'error.html'
     
@@ -181,6 +197,9 @@ class ErrorTemplateView(APIView):
         })
         
 class DemoTemplateView(APIView):
+    """
+    Mimics a typical frontend 'Proceed to checkout page'. Cannot be tested from this api doc
+    """
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'demo.html'
     
