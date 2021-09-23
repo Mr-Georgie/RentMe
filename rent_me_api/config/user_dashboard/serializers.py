@@ -6,7 +6,7 @@ class UserProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Products
-        fields = ['id','name', 'description', 'price', 'category', 'on_loan', 'image'] 
+        fields = ['id','name', 'description', 'price', 'category', 'on_loan', 'image', 'payment_method'] 
         
     
 class ProductUploadSerializer(serializers.ModelSerializer):
@@ -15,4 +15,4 @@ class ProductUploadSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Products
-        fields = ['id','name', 'description', 'price','owner', 'category', 'on_loan', 'image'] 
+        fields = ['id','name', 'description', 'price','owner', 'category', 'on_loan', 'image', 'payment_method'] 
