@@ -72,6 +72,9 @@ class UserProductDetailsAPIView(RetrieveUpdateDestroyAPIView):
     permission_classes = (permissions.IsAuthenticated,IsOwner,)
     lookup_field = "id"
     
+    parser_classes = [MultiPartParser, FormParser]
+    
+    @swagger_auto_schema(request_body=UserProductSerializer)
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user)
     
