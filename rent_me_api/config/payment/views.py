@@ -64,10 +64,10 @@ class PaymentAPIView(APIView):
         product_id = resp['product_id']
         
         merchant_ref = getPassword(32)
-        fallback_url = reverse('flutterwave')
+        redirect_url = reverse('flutterwave')
         
         return Response({
-                          "redirect_to": fallback_url + (f'?amount={amount} &currency={currency_code}'
+                          "redirect_to": redirect_url + (f'?amount={amount} &currency={currency_code}'
                                     f'&product_id={product_id}&merchant_ref={merchant_ref}')
                        })
   
@@ -82,7 +82,7 @@ class PaymentTemplateView(APIView):
     public_key = settings.RAVE_PUBLIC_KEY
         
     def get(self, request):
-        user = request.user
+        user = self.context['request'].user
         # user = 1 # demo purposes
         product_id = request.GET.get('product_id')
         merchant_ref = request.GET.get('merchant_ref')
