@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework import status 
 
 class CustomPaginator(PageNumberPagination):
-    page_size = 5 # Number of objects to return in one page
+    page_size = 20 # Number of objects to return in one page
 
     def generate_response(self, query_set, serializer_obj, request):
         try:
