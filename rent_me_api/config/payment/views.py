@@ -1,6 +1,7 @@
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render
 from rest_framework import response, status
+from django.urls import reverse
 
 # Create your views here.
 from products.models import Products
@@ -13,6 +14,7 @@ from .serializers import TransactionSerializer
 from .sender_details import get_sender_details
 from .receiver_details import get_details
 from django.http import HttpResponsePermanentRedirect
+from .currency_mapping import currency_dict, get_currency_list
 
 from drf_yasg.utils import swagger_auto_schema # to edit the VerifyEmail class
 from drf_yasg import openapi
@@ -31,13 +33,24 @@ def getPassword(length):
     str = string.hexdigits
     return ''.join(random.choice(str) for i in range(length))
 
+class CurrencyList(APIView):
+    """
+    Returns an array of accepted currencies. Doesn't require authentication.
+    """
+    currency_list = get_currency_list(currency_dict)
+    
+    def get(self, request):
+        return Response({"currencies": self.currency_list }, status=status.HTTP_200_OK)
+
+
 class PaymentAPIView(APIView):
     """ 
     Requires authentication. Handles POST request from the frontend. Cannot be tested on the documentation.
     Redirects the user to the flutterwave checkout page.
+    Get a list of accepted currencies from the /accepted-currencies endpoint above
     """
     serializer_class = TransactionSerializer
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     
     @swagger_auto_schema(request_body=TransactionSerializer)
     def post(self, request):
@@ -47,14 +60,13 @@ class PaymentAPIView(APIView):
         
         amount = resp['amount']
         currency = resp['currency']
+        currency_code = currency_dict[currency]
         product_id = resp['product_id']
         
         merchant_ref = getPassword(32)
-        # fallback_url = 'http://127.0.0.1:8000/payment-page/flutterwave/'
-        fallback_url = 'https://rent-me-api.herokuapp.com/payment-page/flutterwave/'
+        fallback_url = reverse('flutterwave')
         
-        
-        return HttpResponseRedirect(redirect_to=fallback_url + (f'?amount={amount} &currency={currency}'
+        return HttpResponseRedirect(redirect_to=fallback_url + (f'?amount={amount} &currency={currency_code}'
                                     f'&product_id={product_id}&merchant_ref={merchant_ref}'))
   
 
@@ -62,14 +74,14 @@ class PaymentTemplateView(APIView):
     """
     The flutterwave Payment UI Generator. Receives request from the checkout endpoints
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'index.html'
     public_key = settings.RAVE_PUBLIC_KEY
         
     def get(self, request):
-        user = request.user
-        # user = 1 # demo purposes
+        # user = request.user
+        user = 1 # demo purposes
         product_id = request.GET.get('product_id')
         merchant_ref = request.GET.get('merchant_ref')
         amount = request.GET.get('amount')
@@ -77,6 +89,11 @@ class PaymentTemplateView(APIView):
         
         sender = get_sender_details(user)
         receiver = get_details(product_id)
+        
+        if sender['phone_number'] == None or sender['phone_number'] == '':
+            return Response({
+                'message': 'Please provide your phone number to proceed'
+            })
         
         email = sender['email']
         phone_number = sender['phone_number']
@@ -106,7 +123,8 @@ class PaymentTemplateView(APIView):
                 'receiver_country': receiver_country,
                 'merchant_ref': merchant_ref,
                 'payment_method': payment_method,
-                'receiver_phone': receiver_phone
+                'receiver_phone': receiver_phone,
+                'message': ''
             }
         )
         
@@ -115,7 +133,7 @@ class SuccessTemplateView(APIView):
     """
     A Success page to be shown after successful payment
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'success.html'
     secret_key = settings.RAVE_SECRET_KEY
@@ -147,8 +165,10 @@ class SuccessTemplateView(APIView):
             if payment_method == "AIRTIME TOPUP":
                 reloadly_access_token = reloadly.get_authenticated()['access_token']
                 
-                get_response = reloadly.topup_product_owner(getPassword(32),receiver_country, receiver_phone, 
-                                        sender_country, sender_phone, reloadly_access_token)
+                print(receiver_phone, sender_phone)
+                
+                get_response = reloadly.topup_product_owner(getPassword(32),receiver_phone, 
+                                                        sender_phone, reloadly_access_token)
             
             print('reloadly response: ',get_response)
             
@@ -201,11 +221,11 @@ class DemoTemplateView(APIView):
     """
     Mimics a typical frontend 'Proceed to checkout page'. Cannot be tested from this api doc
     """
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'demo.html'
     
     def get(self, request):
         return Response({
-            'message': 'This is a demo page to test out payment'
+            'go_to_url': reverse('checkout')
         })

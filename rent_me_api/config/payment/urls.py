@@ -1,6 +1,7 @@
 from django.urls import path
 
-from .views import PaymentTemplateView, SuccessTemplateView, ErrorTemplateView, PaymentAPIView, DemoTemplateView
+from .views import ( PaymentTemplateView, SuccessTemplateView, CurrencyList,
+                    ErrorTemplateView, PaymentAPIView, DemoTemplateView)
 # , TransactionAPIView
 
 urlpatterns = [
@@ -10,4 +11,6 @@ urlpatterns = [
     
     path('checkout/', PaymentAPIView.as_view(), name='checkout'),
     path('frontend-demo/', DemoTemplateView.as_view(), name='frontend-demo'),
+    
+    path('accepted-currencies/', CurrencyList.as_view(), name='accepted-currencies'),
 ]

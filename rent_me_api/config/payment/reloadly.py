@@ -22,9 +22,7 @@ def get_authenticated():
 
     return json.loads(response.text)
 
-def topup_product_owner(random_string,receiver_cty, receiver_num, sender_cty, sender_num, access_token):
-    rc = receiver_cty
-    sc = sender_cty
+def topup_product_owner(random_string, receiver_num, sender_num, access_token):
     
     url = "https://topups-sandbox.reloadly.com/topups"
 
@@ -33,20 +31,10 @@ def topup_product_owner(random_string,receiver_cty, receiver_num, sender_cty, se
     "amount": "100",
     "customIdentifier": "RentMe-"+random_string,
     "recipientPhone": {
-        "countryCode": "NG",
-        "number": "08131191073"
+        "number": receiver_num
     },
-    # "recipientPhone": { for live server
-    #     "countryCode": receiver_cty,
-    #     "number": receiver_num
-    # },
-    # "senderPhone": { for live server
-    #     "countryCode": sender_cty,
-    #     "number": sender_num
-    # }
     "senderPhone": {
-        "countryCode": "NG",
-        "number": "08144149628"
+        "number": sender_num
     }
     
     })
