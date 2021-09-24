@@ -66,8 +66,10 @@ class PaymentAPIView(APIView):
         merchant_ref = getPassword(32)
         fallback_url = reverse('flutterwave')
         
-        return HttpResponseRedirect(redirect_to=fallback_url + (f'?amount={amount} &currency={currency_code}'
-                                    f'&product_id={product_id}&merchant_ref={merchant_ref}'))
+        return Response({
+                          "redirect_to": fallback_url + (f'?amount={amount} &currency={currency_code}'
+                                    f'&product_id={product_id}&merchant_ref={merchant_ref}')
+                       })
   
 
 class PaymentTemplateView(APIView):
