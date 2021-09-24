@@ -1,27 +1,32 @@
-from django.core.mail import EmailMessage
+import requests
+from django.conf import settings
 
-import threading
+url = "https://api.sendinblue.com/v3/smtp/email"
+                
 
+def send_email(data):
 
-class EmailThread(threading.Thread):
-    def __init__(self, email):
-        self.email = email
-        threading.Thread.__init__(self)
-    
-    def run(self):
-        self.email.send()
+    payload = {
+        "sender": {
+            "name": "George from RentMe",
+            "email": "chetamdavies@gmail.com"
+        },
+        "to": [
+            {
+                "email": data['send_to'],
+            }
+        ],
+        "headers": {"Authorization": f"Bearer {settings.SIB_API_KEY}"},
+        "tags": ["RentMe App"],
+        "htmlContent": f"<!DOCTYPE html> <html> <body> {data['email_body']} </body> </html>",
+        "subject": data['email_subject']
+    }
+    headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "api-key": f"{settings.SIB_API_KEY}"
+    }
 
-class Util:
-    
-    # use a static method so we don't need to instantiate the Util class before using it
-    @staticmethod
-    def send_email(data):
-        
-        email = EmailMessage(
-            subject=data['email_subject'],
-            from_email='niyitegekah@gmail.com', 
-            body=data['email_body'],
-            to=[data['send_to']]
-        )
-        # email.send()
-        EmailThread(email).start()
+    response = requests.request("POST", url, json=payload, headers=headers)
+
+    print(response.text)

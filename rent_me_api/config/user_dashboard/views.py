@@ -10,7 +10,7 @@ from pagination.paginationhandler import CustomPaginator
 
 from authentication.models import User
 from authentication.serializers import ResetPasswordByEmailSerializer, SetNewPasswordSerializer, LogoutSerializer
-from authentication.utils import Util
+from authentication.utils import send_email
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse # reverse is used to get url name from url path
 import jwt
@@ -40,12 +40,12 @@ class UserProductCreate(views.APIView):
             serializer.save()
             
             data = {
-                'email_body': 'Hi Admin, a new product has been added by ' + request.user.email +'. Please verify',
+                'email_body': '<h2> Hi Admin, a new product has been added by ' + request.user.email +'. Please verify </h2>',
                 'email_subject': 'Product Verification on Rent Me',
                 'send_to': 'george.isiguzo@yahoo.com'
             }
             
-            Util.send_email(data)
+            send_email(data)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
@@ -116,7 +116,7 @@ class ResetPasswordByEmail(GenericAPIView):
                 'send_to': user.email
             }
                 
-            Util.send_email(data)
+            send_email(data)
         
         return Response({
             'success': 'We have sent you a link to reset your password'

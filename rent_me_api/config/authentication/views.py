@@ -5,8 +5,8 @@ from rest_framework import exceptions, generics, status, views, permissions
 from rest_framework.response import Response
 from .serializers import RegisterSerializer, EmailVerificationSerializer, LoginSerializer
 from .models import User
-from .utils import Util
-from .sendgrid import SendEmail
+from .utils import send_email
+# from .sendinblue import first_call
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse # reverse is used to get url name from url path
 from django.conf import settings
@@ -48,8 +48,8 @@ class RegisterView(generics.GenericAPIView):
         abs_url = 'http://' + current_site + relative_link + '?token=' + str(token)
         
         email_body =  {
-            'message': 'Hi ' + user.username +'. Thank you for signing up on RentMe. Please use link below to verify your email:',
-            'link': abs_url
+            'message': f'<h2>Hi {user.username.upper()}. </h2> <h3>Thank you for signing up on RentMe. Please use link below to verify your email:</h3>',
+            'link': f'<a href="{abs_url}">' + abs_url + '</a>'
         }
         
         data = {
@@ -58,8 +58,8 @@ class RegisterView(generics.GenericAPIView):
             'send_to': user.email
         }
         
-        Util.send_email(data)
-        # SendEmail(data)
+        send_email(data)
+        # first_call()
         
         return Response(user_data, status=status.HTTP_201_CREATED)
         
@@ -78,6 +78,7 @@ class VerifyEmail(views.APIView):
     
     @swagger_auto_schema(manual_parameters=[token_param_config])
     def get(self, request):
+        go_to = reverse('login')
         token = request.GET.get('token')
         try:
             payload = jwt.decode(token, settings.SECRET_KEY, algorithms=['HS256'])
@@ -88,7 +89,8 @@ class VerifyEmail(views.APIView):
             
             return Response({
                 'message':'Your email has been successfully activated',
-                'user': user.email
+                'user': user.username,
+                'login': go_to
                 }, status=status.HTTP_200_OK)
         
         except jwt.ExpiredSignatureError as identifier:
