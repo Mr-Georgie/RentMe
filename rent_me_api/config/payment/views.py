@@ -80,8 +80,8 @@ class PaymentTemplateView(APIView):
     public_key = settings.RAVE_PUBLIC_KEY
         
     def get(self, request):
-        # user = request.user
-        user = 1 # demo purposes
+        user = request.user
+        # user = 1 # demo purposes
         product_id = request.GET.get('product_id')
         merchant_ref = request.GET.get('merchant_ref')
         amount = request.GET.get('amount')
