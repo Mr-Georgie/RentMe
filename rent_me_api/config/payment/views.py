@@ -47,7 +47,7 @@ class PaymentAPIView(APIView):
     """ 
     Requires authentication. Handles POST request from the frontend. Cannot be tested on the documentation.
     Redirects the user to the flutterwave checkout page.
-    Get a list of accepted currencies from the /accepted-currencies endpoint above
+    NB: The frontend dev should get the list of accepted currencies from the /accepted-currencies endpoint above
     """
     serializer_class = TransactionSerializer
     # permission_classes = (permissions.IsAuthenticated,)
