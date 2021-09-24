@@ -142,7 +142,7 @@ class SuccessTemplateView(APIView):
         sender_info = request.GET.get('customer_info').split()
         sender_name = sender_info[0]
         sender_country = sender_info[2]
-        sender_phone = sender_info[1]
+        sender_phone = str(sender_info[1])
         transaction_status = request.GET.get('status')
         transaction_id = request.GET.get('transcId')
         transaction_ref = request.GET.get('transcRef')
@@ -152,7 +152,7 @@ class SuccessTemplateView(APIView):
         receiver_accnum = receiver_info[1]
         receiver_mail = receiver_info[2]
         receiver_country = receiver_info[3]
-        receiver_phone = receiver_info[4]
+        receiver_phone = str(receiver_info[4])
         
         # print('check out: ', receiver_accnum, '', receiver_bank, '', receiver_mail)
         
