@@ -50,7 +50,7 @@ class PaymentAPIView(APIView):
     NB: The frontend dev should get the list of accepted currencies from the /accepted-currencies endpoint above
     """
     serializer_class = TransactionSerializer
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     @swagger_auto_schema(request_body=TransactionSerializer)
     def post(self, request):
@@ -76,13 +76,13 @@ class PaymentTemplateView(APIView):
     """
     The flutterwave Payment UI Generator. Receives request from the checkout endpoints
     """
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'index.html'
     public_key = settings.RAVE_PUBLIC_KEY
         
     def get(self, request):
-        user = self.context['request'].user
+        user = request.user
         # user = 1 # demo purposes
         product_id = request.GET.get('product_id')
         merchant_ref = request.GET.get('merchant_ref')
@@ -135,7 +135,7 @@ class SuccessTemplateView(APIView):
     """
     A Success page to be shown after successful payment
     """
-    # permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     renderer_classes = [TemplateHTMLRenderer]
     template_name = 'success.html'
     secret_key = settings.RAVE_SECRET_KEY
