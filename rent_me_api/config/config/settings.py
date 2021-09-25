@@ -67,9 +67,10 @@ INSTALLED_APPS = [
     'products',
     'rest_framework_simplejwt.token_blacklist',
     'cart',
-    'payment',
+    'transactions',
     'cloudinary',
     'cloudinary_storage',
+    'django_filters',
 ]
 
 SWAGGER_SETTINGS = {

@@ -50,7 +50,7 @@ urlpatterns = [
     
     path('social_auth/', include(('social_auth.urls', 'social_auth'),
                                  namespace="social_auth")),
-    path('payment-page/', include('payment.urls')),
+    path('transactions/', include('transactions.urls')),
     
 ]
 

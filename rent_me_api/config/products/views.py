@@ -2,11 +2,12 @@ from django.shortcuts import render
 from .serializers import AllProductSerializer
 from rest_framework.generics import RetrieveAPIView
 from .models import Products
-from rest_framework import views, status
+from rest_framework import views, status, generics
 from .permissions import IsOwner
 from rest_framework.response import Response
 from pagination.paginationhandler import CustomPaginator
-from rest_framework.parsers import MultiPartParser, FormParser
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters
 # Create your views here.
 
 class AllProductListAPIView(views.APIView):
@@ -32,7 +33,6 @@ class ProductDetailsAPIView(RetrieveAPIView):
     queryset = Products.objects.all()
     lookup_field = "id"
       
-
 class ProductCategoryList(views.APIView):
     """
     Returns an array of product categories. Doesn't require authentication.
@@ -48,3 +48,15 @@ class ProductCategoryList(views.APIView):
                 self.categories.append(product[0])
         
         return Response({"categories": self.categories }, status=status.HTTP_200_OK)
+
+class FilterByCategory(generics.ListAPIView):
+    queryset = Products.objects.all()
+    serializer_class = AllProductSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['category']
+
+class SearchByProductName(generics.ListAPIView):
+    queryset = Products.objects.all()
+    serializer_class = AllProductSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
