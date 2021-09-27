@@ -71,6 +71,8 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'django_filters',
+    'billing_information',
+    'reloadly'
 ]
 
 SWAGGER_SETTINGS = {

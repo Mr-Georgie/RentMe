@@ -51,6 +51,8 @@ urlpatterns = [
     path('social_auth/', include(('social_auth.urls', 'social_auth'),
                                  namespace="social_auth")),
     path('transactions/', include('transactions.urls')),
+    path('billing_info/', include('billing_information.urls')),
+    path('reloadly/', include('reloadly.urls'))
     
 ]
 
