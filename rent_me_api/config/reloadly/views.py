@@ -5,6 +5,8 @@ from rest_framework.response import Response
 
 from drf_yasg.utils import swagger_auto_schema # to edit the VerifyEmail class
 from drf_yasg import openapi
+from .sender_details import get_sender_details
+from .receiver_details import get_details
 
 from .serializers import ReloadlySerializer
 from .reloadly import get_authenticated, topup_product_owner
@@ -23,10 +25,21 @@ class ReloadlyPaymentAPIView(views.APIView):
     
     @swagger_auto_schema(request_body=ReloadlySerializer)
     def post(self, request, *args, **kwargs):
-        receiver_phone = request.data['receiver_phone']
-        receiver_country = request.data['receiver_country']
-        sender_phone = request.data['sender_phone']
-        sender_country = request.data['sender_country']
+        user = request.user
+        product_id = request.GET.get('product_id')
+        
+        sender = get_sender_details(user)
+        receiver = get_details(product_id)
+        
+        if sender['phone_number'] == None or sender['phone_number'] == '':
+            return Response({
+                'message': 'Please provide your phone number to proceed'
+            })
+        
+        sender_phone = sender['phone_number']
+        sender_country = sender['country']
+        receiver_country = receiver.get('country')
+        receiver_phone = receiver.get('phone_number')
         amount = request.data['amount']
         
         reloadly_access_token = get_authenticated()['access_token']
