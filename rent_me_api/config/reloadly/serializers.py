@@ -7,7 +7,7 @@ class ReloadlySerializer(serializers.ModelSerializer):
     
     class Meta:
         model = ReloadlyData
-        fields = '__all__'
+        fields = ['sender_phone', 'transaction_id', 'operator_id','operator_name', 'amount']
         
     def create(self, validated_data):
         return ReloadlyData.objects.create(**validated_data)
