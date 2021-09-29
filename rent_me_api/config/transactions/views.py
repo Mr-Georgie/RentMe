@@ -74,7 +74,8 @@ class TransactionBySender(generics.ListAPIView):
         for the currently authenticated user.
         """
         user = self.request.user
-        return Transaction.objects.filter(sender_name=user)
+        # print(user.username)
+        return Transaction.objects.filter(sender_name=user.username)
     
 class TransactionByReceiver(generics.ListAPIView):
     serializer_class = TransactionSerializer
@@ -86,6 +87,7 @@ class TransactionByReceiver(generics.ListAPIView):
         for the currently authenticated user.
         """
         user = self.request.user
+        # print(user.email)
         return Transaction.objects.filter(receiver_email=user.email)
             
             
