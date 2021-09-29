@@ -86,7 +86,7 @@ class TransactionByReceiver(generics.ListAPIView):
         for the currently authenticated user.
         """
         user = self.request.user
-        return Transaction.objects.filter(receiver_name=user)
+        return Transaction.objects.filter(receiver_email=user.email)
             
             
             
