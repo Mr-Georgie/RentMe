@@ -8,4 +8,6 @@ def get_sender_details(user):
        'user_name': user.username,
        'country': user.country
     }
+    
+    print(user.username)
     return sender

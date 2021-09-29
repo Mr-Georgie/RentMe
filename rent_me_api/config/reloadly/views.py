@@ -2,13 +2,14 @@ from os import stat
 from requests.api import get
 from rest_framework import views, status
 from rest_framework.response import Response
+from user_dashboard.permissions import permissions
 
 from drf_yasg.utils import swagger_auto_schema # to edit the VerifyEmail class
 from drf_yasg import openapi
 from .sender_details import get_sender_details
 from .receiver_details import get_details
 
-from .serializers import ReloadlySerializer
+from .serializers import ReloadlySerializer, ReloadlyAcceptedParameterSerializer
 from .reloadly import get_authenticated, topup_product_owner
 import random, string, json
 
@@ -22,12 +23,17 @@ def generate_random_string(length):
     return ''.join(random.choice(str) for i in range(length))
 
 class ReloadlyPaymentAPIView(views.APIView):
+    """
+    Once cash transfer from flutterwave is successful, this endpoint handles mobile airtime topup to product owner. The required field is specified below.
+     
+    """
+    permission_classes = (permissions.IsAuthenticated,)
     
-    @swagger_auto_schema(request_body=ReloadlySerializer)
+    @swagger_auto_schema(request_body=ReloadlyAcceptedParameterSerializer)
     def post(self, request, *args, **kwargs):
         user = request.user
-        product_id = request.GET.get('product_id')
-        
+        product_id = request.data['product_id']
+        print(product_id)
         sender = get_sender_details(user)
         receiver = get_details(product_id)
         
