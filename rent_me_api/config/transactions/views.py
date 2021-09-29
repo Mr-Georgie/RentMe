@@ -37,15 +37,10 @@ class TransactionCreateAPIView(generics.GenericAPIView):
                 'message': 'Please provide your phone number to proceed'
             })
         
-        email = sender['email']
-        sender_phone = sender['phone_number']
         sender_name = sender['user_name']
         receiver_mail = receiver['email']
         receiver_accnum = receiver.get('bank_account_number')
         receiver_bank = receiver.get('bank_name')
-        receiver_country = receiver.get('country')
-        payment_method = receiver.get('payment_method')
-        receiver_phone = receiver.get('phone_number')
         amount = request.data['amount']
         
         data = {

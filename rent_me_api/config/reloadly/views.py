@@ -33,16 +33,17 @@ class ReloadlyPaymentAPIView(views.APIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         product_id = request.data['product_id']
+        sender_phone = request.data['sender_phone']
         print(product_id)
         sender = get_sender_details(user)
         receiver = get_details(product_id)
         
-        if sender['phone_number'] == None or sender['phone_number'] == '':
+        if sender_phone == None or sender_phone == '':
             return Response({
                 'message': 'Please provide your phone number to proceed'
             })
         
-        sender_phone = sender['phone_number']
+        # sender_phone = sender['phone_number']
         sender_country = sender['country']
         receiver_country = receiver.get('country')
         receiver_phone = receiver.get('phone_number')

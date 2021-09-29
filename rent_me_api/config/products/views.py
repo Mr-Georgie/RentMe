@@ -20,9 +20,6 @@ class AllProductListAPIView(views.APIView):
         paginator = CustomPaginator()
         response = paginator.generate_response(products, AllProductSerializer, request)
         return response
-        
-        # serializer = AllProductSerializer(products, many=True)
-        # return Response(serializer.data, status=status.HTTP_200_OK)
     
 class ProductDetailsAPIView(RetrieveAPIView):
     """

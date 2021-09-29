@@ -4,6 +4,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from products.models import Products
 from rest_framework import permissions, views, status
 from .permissions import IsOwner
+from .check_user_details import completed_profile
 from rest_framework.response import Response
 from pagination.paginationhandler import CustomPaginator
 # Create your views here.
@@ -27,14 +28,22 @@ class CustomRedirect(HttpResponsePermanentRedirect):
     
 class UserProductCreate(views.APIView):
     """
-    Allows an authenticated user to add product or property for rent. Content-type should be multipart form to allow for image file upload
-    Notifies app admin at the once image is added. Product cannot be 
+    Allows an authenticated user to add product or property for rent. Content-type should be multipart form to allow for image file upload. Notifies app admin at the once image is added. 
+    If user has not completed all fields in his profile details, he would be given an error e.g: "error": ["Please provide your bank name in your account page"]
     """
     permission_classes = (permissions.IsAuthenticated,)
     parser_classes = [MultiPartParser, FormParser]
     
     @swagger_auto_schema(request_body=ProductUploadSerializer)
     def post(self, request, format=None):
+        user = request.user
+        check = completed_profile(user)['is_profile_complete']
+        
+        if check is False:
+            return Response({
+                'error': completed_profile(user)['message']
+            })
+        
         serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
         if serializer.is_valid():
             serializer.save()
@@ -57,7 +66,7 @@ class UserProductListAPIView(ListAPIView):
     To view a json list of all products added by an authenticated user. Accepts page number and returns a pagination list too
     """
     serializer_class = UserProductSerializer
-    queryset = Products.objects.all()
+    queryset = Products.objects.order_by('id')
     permission_classes = (permissions.IsAuthenticated,)
     
     def get_queryset(self):
