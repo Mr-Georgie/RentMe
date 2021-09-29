@@ -16,9 +16,10 @@ class ReloadlyAcceptedParameterSerializer(serializers.ModelSerializer):
     amount = serializers.IntegerField(required=True)
     product_id = serializers.IntegerField(required=True)
     sender_phone = serializers.CharField(required=True)
+    sender_country = serializers.CharField(required=True)
     
     class Meta:
         model = ReloadlyData
-        fields = ['amount', 'product_id', 'sender_phone']
+        fields = ['amount', 'product_id', 'sender_phone', 'sender_country']
     
     

@@ -34,6 +34,8 @@ class ReloadlyPaymentAPIView(views.APIView):
         user = request.user
         product_id = request.data['product_id']
         sender_phone = request.data['sender_phone']
+        sender_country = request.data['sender_country']
+        
         print(product_id)
         print(sender_phone)
         sender = get_sender_details(user)
@@ -45,7 +47,7 @@ class ReloadlyPaymentAPIView(views.APIView):
             })
         
         # sender_phone = sender['phone_number']
-        sender_country = sender['country']
+        # sender_country = sender['country']
         receiver_country = receiver.get('country')
         receiver_phone = receiver.get('phone_number')
         amount = request.data['amount']
