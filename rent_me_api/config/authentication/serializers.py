@@ -12,17 +12,17 @@ from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 
 
 class UserSerializer(serializers.ModelSerializer):
-    products = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     
     class Meta:
         model = User
         fields = [
-            'id', 
-            'first_name', 
-            'last_name', 
+            'id',
             'username', 
             'email', 
-            'products'
+            'bank_account_number',
+            'bank_name',
+            'country',
+            'phone_number'
         ]
 
 class RegisterSerializer(serializers.ModelSerializer):

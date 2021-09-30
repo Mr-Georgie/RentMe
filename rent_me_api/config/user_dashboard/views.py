@@ -10,7 +10,7 @@ from pagination.paginationhandler import CustomPaginator
 # Create your views here.
 
 from authentication.models import User
-from authentication.serializers import ResetPasswordByEmailSerializer, SetNewPasswordSerializer, LogoutSerializer
+from authentication.serializers import UserSerializer, ResetPasswordByEmailSerializer, SetNewPasswordSerializer, LogoutSerializer
 from authentication.utils import send_email
 from django.contrib.sites.shortcuts import get_current_site
 from django.urls import reverse # reverse is used to get url name from url path
@@ -60,7 +60,6 @@ class UserProductCreate(views.APIView):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
-
 class UserProductListAPIView(ListAPIView):
     """
     To view a json list of all products added by an authenticated user. Accepts page number and returns a pagination list too
@@ -86,7 +85,26 @@ class UserProductDetailsAPIView(RetrieveUpdateDestroyAPIView):
     @swagger_auto_schema(request_body=UserProductSerializer)
     def get_queryset(self):
         return self.queryset.filter(owner=self.request.user)
+ 
+class EditUserDetailsAPIView(RetrieveUpdateDestroyAPIView):
+    """
+    To edit and update the currently authenticated user account details. To be used together with the 'view user details' endpoint.
+    """
+    permisssion_classes = (permissions.IsAuthenticated,)
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    lookup_field = 'id'
     
+class ViewUserDetailsAPIView(ListAPIView):
+    """
+    To view the currently authenticated user account details. To be used together with the 'edit-update user details' endpoint.
+    """
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+    permission_classes = (permissions.IsAuthenticated,)
+    
+    def get_queryset(self):
+        return self.queryset.filter(id=self.request.user.id)   
       
 class ResetPasswordByEmail(GenericAPIView):
     """

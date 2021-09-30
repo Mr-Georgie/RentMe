@@ -1,8 +1,12 @@
 from django.urls import path
 
-from .views import UserProductDetailsAPIView,UserProductCreate, UserProductListAPIView, PasswordTokenCheck, ResetPasswordByEmail, SetNewPasswordAPIView, LogoutAPIView
+from .views import (UserProductDetailsAPIView,UserProductCreate, UserProductListAPIView, 
+                    PasswordTokenCheck, ResetPasswordByEmail, SetNewPasswordAPIView, 
+                    LogoutAPIView, ViewUserDetailsAPIView, EditUserDetailsAPIView)
 
 urlpatterns = [
+    path('view-user-details/', ViewUserDetailsAPIView.as_view(), name='view-user-details'),
+    path('edit-update-user-details/<int:id>', EditUserDetailsAPIView.as_view(), name='edit-update-user-details'),
     path('products-create/', UserProductCreate.as_view(), name='user-products-create'),
     path('products-list/', UserProductListAPIView.as_view(), name='user-products-list'),
     path('product-details/<int:id>', UserProductDetailsAPIView.as_view(), name='user-product-details'),
