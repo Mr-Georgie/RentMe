@@ -19,6 +19,8 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
                 "This token is invalid or expired. Please login again"
             )
             
+        print(user_data)
+        print(user_data['aud'])
         return user_data
         # if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
             

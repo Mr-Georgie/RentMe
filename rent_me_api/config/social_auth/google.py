@@ -9,7 +9,7 @@ class Google:
     @staticmethod
     def validate(auth_token):
         """
-        blah blah blah 
+        validates google auth token
         """
         try:
             id_info = google.oauth2.id_token.verify_oauth2_token(
