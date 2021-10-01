@@ -16,7 +16,7 @@ class Google:
                 auth_token, requests.Request()
             )
             
-            print(id_info)
+            print("Google User Id gotten successfully")
             
             if 'accounts.google.com' in id_info['iss']:
                 return id_info
