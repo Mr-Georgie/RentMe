@@ -44,21 +44,22 @@ class UserProductCreate(views.APIView):
                 'error': completed_profile(user)['message']
             })
         
-        serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
-        if serializer.is_valid():
-            serializer.save()
-            
-            data = {
-                'email_body': '<h2> Hi Admin, a new product has been added by ' + request.user.email +'. Please verify </h2>',
-                'email_subject': 'Product Verification on Rent Me',
-                'send_to': 'george.isiguzo@yahoo.com'
-            }
-            
-            send_email(data)
-            
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
+            if serializer.is_valid():
+                serializer.save()
+                
+                data = {
+                    'email_body': '<h2> Hi Admin, a new product has been added by ' + request.user.email +'. Please verify </h2>',
+                    'email_subject': 'Product Verification on Rent Me',
+                    'send_to': 'george.isiguzo@yahoo.com'
+                }
+                
+                send_email(data)
+                
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
 class UserProductListAPIView(ListAPIView):
     """
