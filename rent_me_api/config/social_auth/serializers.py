@@ -18,25 +18,31 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
             user_data['sub']
             print(user_data['sub'])
         except :
-            serializers.ValidationError(
+            raise serializers.ValidationError(
                 "This token is invalid or expired. Please login again"
             )
+        
+        if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
             
+<<<<<<< Updated upstream
         #print(user_data)
         #print(user_data['aud'])
         return user_data
         # if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
             
         #     raise AuthenticationFailed('oops, who are you?')
+=======
+            raise AuthenticationFailed('oops, who are you?')
+>>>>>>> Stashed changes
         
-        # user_id = user_data['sub']
-        # email = user_data['email']
-        # name = user_data['name']
-        # provider = 'google'
+        user_id = user_data['sub']
+        email = user_data['email']
+        name = user_data['name']
+        provider = 'google'
         
-        # return register_social_user(
-        #     provider=provider, user_id=user_id, email=email, name=name
-        # )
+        return register_social_user(
+            provider=provider, user_id=user_id, email=email, name=name
+        )
         
         
 class FacebookSocialAuthSerializer(serializers.Serializer):

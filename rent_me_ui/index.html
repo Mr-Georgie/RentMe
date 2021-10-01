@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Apps Script API Quickstart</title>
+    <meta name="google-signin-scope" content="profile email"/>
+    <meta 
+        name="google-signin-client_id"
+        content="128911156344-8bdcb2hvd3ueonbfohka3cvmpm9fgt0h.apps.googleusercontent.com" />
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+  </head>
+  <body>
+  
+    <div class="g-signin2" data-onsuccess="onSignin" data-theme="dark"></div>
+
+    <script>
+        function onSignin(googleUser) {
+            var profile = googleUser.getBasicProfile();
+            console.log("ID: " + profile.getId());
+            
+            var id_token = googleUser.getAuthResponse().id_token;
+            console.log("ID Token: "+ id_token)
+        }
+    </script>
+
+  </body>
+</html>

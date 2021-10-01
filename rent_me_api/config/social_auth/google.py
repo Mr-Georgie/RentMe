@@ -1,6 +1,6 @@
-# from google.auth.transport import requests
-# from google.oauth2 import id_token
-import google
+from google.auth.transport import requests
+from google.oauth2 import id_token
+# import google
 
 
 class Google:
@@ -12,13 +12,16 @@ class Google:
         validates google auth token
         """
         try:
-            id_info = google.oauth2.id_token.verify_oauth2_token(
-                auth_token, google.auth.transport.requests.Request()
+            id_info = id_token.verify_oauth2_token(
+                auth_token, requests.Request()
             )
+            
+            print(id_info)
             
             if 'accounts.google.com' in id_info['iss']:
                 return id_info
             
         except:
+            # print(id_info)
             return "The token is either invalid or has expired"
         
