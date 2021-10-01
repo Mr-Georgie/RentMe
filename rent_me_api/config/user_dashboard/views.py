@@ -44,7 +44,7 @@ class UserProductCreate(views.APIView):
             print("profile incomplete")
             return Response({
                 'error': completed_profile(user)['message']
-            })
+            }, status=status.HTTP_403_FORBIDDEN)
         
         else:
             serializer = ProductUploadSerializer(data=request.data, context = {'request': request})
