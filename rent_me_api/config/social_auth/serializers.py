@@ -12,11 +12,10 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
     
     def validate_auth_token(self, auth_token):
         user_data = google.Google.validate(auth_token)
-        print("user data should show below:")
-        print(user_data)
+        
         try:
             user_data['sub']
-            print(user_data['sub'])
+            
         except :
             raise serializers.ValidationError(
                 "This token is invalid or expired. Please login again"
@@ -24,16 +23,7 @@ class GoogleSocialAuthSerializer(serializers.Serializer):
         
         if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
             
-<<<<<<< Updated upstream
-        #print(user_data)
-        #print(user_data['aud'])
-        return user_data
-        # if user_data['aud'] != settings.GOOGLE_CLIENT_ID:
-            
-        #     raise AuthenticationFailed('oops, who are you?')
-=======
             raise AuthenticationFailed('oops, who are you?')
->>>>>>> Stashed changes
         
         user_id = user_data['sub']
         email = user_data['email']
