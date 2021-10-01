@@ -40,6 +40,8 @@ class UserProductCreate(views.APIView):
         check = completed_profile(user)['is_profile_complete']
         
         if check is False:
+            
+            print("profile incomplete")
             return Response({
                 'error': completed_profile(user)['message']
             })
