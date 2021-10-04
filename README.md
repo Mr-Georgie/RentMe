@@ -17,7 +17,7 @@ A service thst allows individuals and organizations to lease equipments for long
 
 - Python & [django rest framework](https://www.django-rest-framework.org/)
 
-# APIs Used
+## APIs used
 
 - [Flutterwave Inline integration](https://developer.flutterwave.com/docs/flutterwave-inline)
 - [Reloadly Airtime TopUp](https://docs.reloadly.com/airtime/top-ups/top-up)
