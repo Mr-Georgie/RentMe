@@ -13,7 +13,7 @@ class Products(models.Model):
         ('ELECTRONICS','ELECTRONICS'),
         ('AUTOMOBILE','AUTOMOBILE'),
         ('OFFICE SPACE','OFFICE SPACE'),
-        ('AGRICULTURAL','AGRICULTURAL')
+        ('OTHERS','OTHERS')
     ]
     PAYMENT_OPTIONS = [
         ('AIRTIME TOPUP', 'AIRTIME TOPUP'),
