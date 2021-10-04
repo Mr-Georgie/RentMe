@@ -49,12 +49,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(max_length=255, unique=True, db_index=True)
     email = models.EmailField(max_length=255, unique=True, db_index=True)
-    
-    bank_account_number = models.PositiveIntegerField(blank=True, null=True)
-    bank_name = models.CharField(max_length=50, blank=True, null=True)
-    country = models.CharField(max_length=50, blank=True, null=True)
-    phone_number = models.CharField(max_length=50, blank=True, null=True)
-    
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -64,6 +58,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         max_length=255, blank=False,
         null=False, default=AUTH_PROVIDERS.get('email')
     )
+    
+    # These fields are temporarily given default values until Frontend creates a UI for users to update their account details
+    bank_account_number = models.CharField(max_length=20,blank=True, null=True, default="0059227130")
+    bank_name = models.CharField(max_length=50, blank=True, null=True, default="Access")
+    country = models.CharField(max_length=50, blank=True, null=True, default="Nigeria")
+    phone_number = models.CharField(max_length=50, blank=True, null=True, default="08144149628")
+    
     
     USERNAME_FIELD = 'email' # to enable login with email instead of username (default)
     REQUIRED_FIELDS = ['username']
