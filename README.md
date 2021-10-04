@@ -1,9 +1,9 @@
 # RentMe API for the ReloadlyXFlutterwave Hackathon
 
-https://img.shields.io/badge/code-python%2Fdjango-green
-https://img.shields.io/badge/documentation-Swagger%20Ui-brightgreen
-https://img.shields.io/badge/hosted%20on-Heroku-red
-https://img.shields.io/badge/Tools-VSCode-blue
+![](https://img.shields.io/badge/code-python%2Fdjango-green)
+![](https://img.shields.io/badge/documentation-Swagger%20Ui-brightgreen)
+![](https://img.shields.io/badge/hosted%20on-Heroku-red)
+![](https://img.shields.io/badge/Tools-VSCode-blue)
 
 A service thst allows individuals and organizations to lease equipments for long or short term use.
 
